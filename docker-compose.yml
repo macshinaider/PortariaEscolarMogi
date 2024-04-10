@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   postgres:
@@ -49,8 +49,18 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  apizap:
+    image: atendai/evolution-api:homolog
+    env_file: ./config.env
+    networks:
+      - backend
+    ports:
+      - 0.0.0.0:8080:8080
+    deploy:
+      mode: replicated
+      replicas: 1
       
-          
 
 volumes:
   postgres_data:

@@ -17,6 +17,7 @@ model Aluno {
   Sala         Sala?          @relation(fields: [salaId], references: [id])
   Registrologs Registrologs[]
   Responsavel  Responsavel[]
+  rg           String?
 }
 
 model Escolas {
@@ -25,6 +26,7 @@ model Escolas {
   cidade      String
   estado      String
   lougradouro String
+  cep         String        @unique
   numero      Int
   usuarioId   Int?
   Aluno       Aluno[]
@@ -36,7 +38,7 @@ model Escolas {
 model Professores {
   id        Int      @id @unique @default(autoincrement())
   nome      String
-  whatsapp  String
+  whatsapp  String? @unique
   escolasId Int?
   Escolas   Escolas? @relation(fields: [escolasId], references: [id])
 }
@@ -54,18 +56,19 @@ model Registrologs {
 model Responsavel {
   id           Int            @id @unique @default(autoincrement())
   nome         String
-  whatsapp     String
+  whatsapp     String? @unique
   alunoId      Int?
-  Registrologs Registrologs[]
-  Aluno        Aluno?         @relation(fields: [alunoId], references: [id])
+  registrologs Registrologs[]
+  aluno        Aluno?         @relation(fields: [alunoId], references: [id])
+  code         Int @unique
 }
 
 model Sala {
   id        Int      @id @unique @default(autoincrement())
   numero    Int
   escolasId Int?
-  Aluno     Aluno[]
-  Escolas   Escolas? @relation(fields: [escolasId], references: [id])
+  aluno     Aluno[]
+  escolas   Escolas? @relation(fields: [escolasId], references: [id])
 }
 
 model Usuario {

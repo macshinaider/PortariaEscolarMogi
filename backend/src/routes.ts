@@ -1,13 +1,32 @@
 import express from "express";
 import { Request, Response } from "express";
 import StatusBackend from "./services/status/status";
+import Consult from "./services/consult/get";
 
-const router = express.Router();
+class Router {
+	router: any;
+    constructor() {
+        this.router = express.Router();
+        this.initializeRoutes();
+    }
 
-router.get("/", (req, res) => {
-	res.send("Funcionando Perfeitamente");
-});
+    initializeRoutes() {
+        this.router.get("/", this.index);
+        this.router.get("/status", this.status);
+		this.router.get("/verify/email/:email?", Consult.Email)
+    }
 
-router.get("/status", StatusBackend.Status);
+    index(req: Request, res: Response) {
+        res.send("Funcionando Perfeitamente");
+    }
 
-export default router;
+    status(req: Request, res: Response) {
+        StatusBackend.Status(req, res);
+    }
+
+	
+
+	
+}
+
+export default new Router().router;
