@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Lucas102030
+      POSTGRES_DB: games
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    ports:
+      - 0.0.0.0:5432:5432
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: luuhsantanafs
+      RABBITMQ_DEFAULT_PASS: Lucas102030
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - backend
+    ports:
+      - 0.0.0.0:5672:5672
+      - 0.0.0.0:15672:15672
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  minio:
+    image: minio/minio
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: luuhsantanafs
+      MINIO_SECRET_KEY: Lucas102030
+    volumes:
+      - minio_data:/data
+    networks:
+      - backend
+    ports:
+      - 0.0.0.0:9000:9000
+      - 0.0.0.0:9001:9001
+    deploy:
+      mode: replicated
+      replicas: 1
+      
+          
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+  minio_data:
+
+networks:
+  backend:
+    driver: overlay

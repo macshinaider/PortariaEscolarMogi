@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Aluno {
+  id           Int            @id @unique @default(autoincrement())
+  nome         String
+  idade        Int
+  escolasId    Int?
+  salaId       Int?
+  Escolas      Escolas?       @relation(fields: [escolasId], references: [id])
+  Sala         Sala?          @relation(fields: [salaId], references: [id])
+  Registrologs Registrologs[]
+  Responsavel  Responsavel[]
+}
+
+model Escolas {
+  id          Int           @id @unique @default(autoincrement())
+  nome        String
+  cidade      String
+  estado      String
+  lougradouro String
+  numero      Int
+  usuarioId   Int?
+  Aluno       Aluno[]
+  Usuario     Usuario?      @relation(fields: [usuarioId], references: [id])
+  Professores Professores[]
+  Sala        Sala[]
+}
+
+model Professores {
+  id        Int      @id @unique @default(autoincrement())
+  nome      String
+  whatsapp  String
+  escolasId Int?
+  Escolas   Escolas? @relation(fields: [escolasId], references: [id])
+}
+
+model Registrologs {
+  id            Int          @id @unique @default(autoincrement())
+  DHEntrada     String
+  DHSaida       String
+  alunoId       Int?
+  responsavelId Int?
+  Aluno         Aluno?       @relation(fields: [alunoId], references: [id])
+  Responsavel   Responsavel? @relation(fields: [responsavelId], references: [id])
+}
+
+model Responsavel {
+  id           Int            @id @unique @default(autoincrement())
+  nome         String
+  whatsapp     String
+  alunoId      Int?
+  Registrologs Registrologs[]
+  Aluno        Aluno?         @relation(fields: [alunoId], references: [id])
+}
+
+model Sala {
+  id        Int      @id @unique @default(autoincrement())
+  numero    Int
+  escolasId Int?
+  Aluno     Aluno[]
+  Escolas   Escolas? @relation(fields: [escolasId], references: [id])
+}
+
+model Usuario {
+  id       Int       @id @unique @default(autoincrement())
+  nome     String
+  password String
+  email    String    @unique
+  whatsapp String    @unique
+  Escolas  Escolas[]
+}

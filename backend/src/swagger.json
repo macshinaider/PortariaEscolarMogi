@@ -1,0 +1,35 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "Portaria Escolar API",
+		"version": "1.0.0",
+		"description": "Em desenvolvimento"
+	},
+	"paths": {
+		"/endpoint": {
+			"get": {
+				"summary": "Resumo da operação",
+				"description": "Descrição detalhada da operação",
+				"responses": {
+					"200": {
+						"description": "Sucesso"
+					}
+				}
+			}
+		},
+		"/": {
+			"get": {
+				"summary": "Rota principal da API",
+				"description": "Rota principal que está funcionando perfeitamente.",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		}
+	}
+}
