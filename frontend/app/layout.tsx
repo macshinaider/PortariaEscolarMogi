@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Inter, Rubik } from "next/font/google";
 import "./globals.css";
@@ -18,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}><QueryProvider>{children}</QueryProvider></body>
+      <body className={inter.className}>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
