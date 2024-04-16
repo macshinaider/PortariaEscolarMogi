@@ -4,9 +4,13 @@ interface StatusData {
 	Testando: string;
 }
 
+
 class StatusBackend {
+
 	public static async Status(req: Request, res: Response) {
-		res.status(200).send("Funcionando")
+		const status = process.env.NODE_ENV
+		console.log("🚀 ~ StatusBackend ~ Status ~ status:", status)
+		res.status(200).send(status)
 	}
 }
 
