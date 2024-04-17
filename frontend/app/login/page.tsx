@@ -4,21 +4,16 @@ import { fetchStatus } from "./fetch";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTheme } from "next-themes";
+import Link from "next/link";
 
 const schemaLogin = z.object({
-  nome: z.string().min(3, "Nome Invalido").max(80), // nome 
-  email: z.string().email({ message: "Email inválido" }), // validar email
-  password: z.string(), // validar senha
-  confirmpassword: z.string(), // validar senha
-  whatsapp: z.string(),
-}).refine(data => data.password === data.confirmpassword, {
-  message: "As senhas não correspondem",
-  path: ['confirmpassword'], // O caminho para o campo que deve receber o erro
-});;
-
-
+  email: z.string().email({ message: "Email inválido" }),
+  password: z.string(),
+});
 
 export default function LoginPage() {
+  const { theme } = useTheme();
   const {
     register,
     handleSubmit,
@@ -27,18 +22,67 @@ export default function LoginPage() {
     resolver: zodResolver(schemaLogin),
   });
 
-
   const { data, isLoading, isError } = useQuery("status", fetchStatus, {
-    refetchInterval: 5000, 
+    refetchInterval: 5000,
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Seu Backend esta Offline</div>;
 
+  function onSubmit(data: any) {
+    console.log(data);
+  }
+
+  function RedirectLogin() {
+    window.location.href = "/register";
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className=" text-">Login</h1>
-      <form></form>
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 gap-10">
+      <h1 className="text-3xl font-bold">Login Sistema</h1>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col justify-between gap-2 "
+      >
+        <div className="flex gap-3 p-1 items-center justify-between">
+          <label className="italic font-medium">Email:</label>
+          <input
+            {...register("email")}
+            className={`flex rounded h-8 p-1 border-2 ${
+              theme === "dark"
+                ? "bg-zinc-800 text-white focus:bg-white focus:text-black"
+                : "bg-white text-black focus:bg-zinc-800 focus:text-white"
+            }`}
+          />
+          {errors.email && <p>{errors.email.message?.toString()}</p>}
+        </div>
+        <div className="flex gap-3 p-1 items-center justify-between">
+          <label className="italic font-medium">Senha:</label>
+          <input
+            {...register("email")}
+            className={`flex rounded h-8 p-1 border-2 ${
+              theme === "dark"
+                ? "bg-zinc-800 text-white focus:bg-white focus:text-black"
+                : "bg-white text-black focus:bg-zinc-800 focus:text-white"
+            }`}
+          />
+          {errors.password && <p>{errors.password.message?.toString()}</p>}
+        </div>
+        <div className="flex gap-1 p-1 items-center justify-between">
+          <button
+            type="submit"
+            className="flex bg-emerald-500 items-center justify-center text-white rounded p-2 w-32"
+          >
+            Entrar
+          </button>
+          <Link
+            href="/register"
+            className="flex bg-blue-500 items-center justify-center text-white rounded p-2 w-32"
+          >
+            Criar Conta
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }

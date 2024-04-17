@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export default function Register() {
   const { theme } = useTheme();
@@ -18,15 +19,11 @@ export default function Register() {
     console.log(data);
   };
 
-  function RedirectLogin() {
-    window.location.href = "/login";
-  }
-
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 h-screen justify-center">
       <div className="mb-6">
-        <h1 className="flex flex-col font-sans text-xl items-center justify-center">
-          Cadastro Sistema Portaria Creche
+        <h1 className="flex text-3xl font-bold justify-center items-center">
+          Cadastro Portaria Creche
         </h1>
       </div>
       <div className="flex flex-col justify-center items-center p-2 w-auto">
@@ -100,19 +97,19 @@ export default function Register() {
             />
             {errors.whatsapp && <p>{errors.whatsapp.message?.toString()}</p>}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center justify-center">
             <button
               type="submit"
               className="flex items-center rounded mt-6 bg-emerald-500 p-4 h-8 text-white"
             >
               Cadastrar
             </button>
-            <button
-              onClick={RedirectLogin}
+            <Link
+              href="/login"
               className="flex items-center rounded mt-6 bg-blue-500 p-4 h-8 text-white"
             >
               Fazer Login
-            </button>
+            </Link>
           </div>
         </form>
       </div>
