@@ -2,8 +2,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
+import { useTheme } from "next-themes";
 
 export default function Register() {
+  const { theme } = useTheme();
   const {
     register,
     handleSubmit,
@@ -16,8 +18,12 @@ export default function Register() {
     console.log(data);
   };
 
+  function RedirectLogin() {
+    window.location.href = "/login";
+  }
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-5">
       <div className="mb-6">
         <h1 className="flex flex-col font-sans text-xl items-center justify-center">
           Cadastro Sistema Portaria Creche
@@ -26,13 +32,17 @@ export default function Register() {
       <div className="flex flex-col justify-center items-center p-2 w-auto">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col justify-between"
+          className="flex flex-col justify-between gap-5"
         >
           <div className="flex gap-3 p-1 items-center justify-between">
             <label className="italic font-medium">Nome:</label>
             <input
               {...register("nome")}
-              className="flex rounded bg-zinc-800 border-white h-8 p-1"
+              className={`flex rounded h-8 p-1 border-2 ${
+                theme === "dark"
+                  ? "bg-zinc-800 text-white focus:bg-white focus:text-black"
+                  : "bg-white text-black focus:bg-zinc-800 focus:text-white"
+              }`}
             />
             {errors.nome && <p>{errors.nome.message?.toString()}</p>}
           </div>
@@ -41,7 +51,11 @@ export default function Register() {
             <label className="italic font-medium">Email:</label>
             <input
               {...register("email", { required: true })}
-              className="flex rounded bg-zinc-800 border-white h-8 p-1"
+              className={`flex rounded h-8 p-1 border-2 ${
+                theme === "dark"
+                  ? "bg-zinc-800 text-white"
+                  : "bg-white text-black"
+              }`}
             />
             {errors.email && <p>{errors.email.message?.toString()}</p>}
           </div>
@@ -50,7 +64,11 @@ export default function Register() {
             <input
               type="password"
               {...register("password", { required: true })}
-              className="flex rounded bg-zinc-800 border-white h-8 p-1"
+              className={`flex rounded h-8 p-1 border-2 ${
+                theme === "dark"
+                  ? "bg-zinc-800 text-white"
+                  : "bg-white text-black"
+              }`}
             />
             {errors.password && <p>{errors.password.message?.toString()}</p>}
           </div>
@@ -58,8 +76,12 @@ export default function Register() {
             <label className="italic font-medium">Confirmar Senha:</label>
             <input
               type="password"
-              {...register("passwordConfirm", { required: true })}
-              className="flex rounded bg-zinc-800 border-white h-8 p-1"
+              {...register("confirmpassword", { required: true })}
+              className={`flex rounded h-8 p-1 border-2 ${
+                theme === "dark"
+                  ? "bg-zinc-800 text-white"
+                  : "bg-white text-black"
+              }`}
             />
             {errors.confirmpassword && (
               <p>{errors.confirmpassword.message?.toString()}</p>
@@ -70,17 +92,29 @@ export default function Register() {
             <input
               type="text"
               {...register("whatsapp", { required: true })}
-              className="flex rounded bg-zinc-800 border-white h-8 p-1"
+              className={`flex rounded h-8 p-1 border-2 ${
+                theme === "dark"
+                  ? "bg-zinc-800 text-white"
+                  : "bg-white text-black"
+              }`}
             />
             {errors.whatsapp && <p>{errors.whatsapp.message?.toString()}</p>}
           </div>
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              className="flex items-center rounded mt-6 bg-emerald-500 p-4 h-8 text-white"
+            >
+              Cadastrar
+            </button>
+            <button
+              onClick={RedirectLogin}
+              className="flex items-center rounded mt-6 bg-blue-500 p-4 h-8 text-white"
+            >
+              Fazer Login
+            </button>
+          </div>
         </form>
-        <button
-          type="submit"
-          className="flex items-center rounded mt-6 bg-emerald-500 p-4 h-8"
-        >
-          Cadastrar
-        </button>
       </div>
     </div>
   );

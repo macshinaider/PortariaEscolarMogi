@@ -18,7 +18,7 @@ export default function Header() {
         <button onClick={() => redirect("register")}>Cadastrar Escola</button>
         <button
           onClick={() => redirect("login")}
-          className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-400"
+          className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-400 text-white"
         >
           Entrar no Sistema
         </button>
