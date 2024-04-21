@@ -59,7 +59,8 @@ export default function LoginPage() {
         <div className="flex gap-3 p-1 items-center justify-between">
           <label className="italic font-medium">Senha:</label>
           <input
-            {...register("email")}
+            {...register("password")}
+            type="password"
             className={`flex rounded h-8 p-1 border-2 ${
               theme === "dark"
                 ? "bg-zinc-800 text-white focus:bg-white focus:text-black"
