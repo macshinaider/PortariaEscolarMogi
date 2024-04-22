@@ -1,11 +1,14 @@
 "use client";
 import { useQuery } from "react-query";
-import { fetchStatus } from "./fetch";
+import { fetchLogin, fetchStatus } from "./fetch";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import Cookie from "js-cookie";
+import { useToast } from "@/components/ui/use-toast";
+import { toast } from "react-toastify";
 
 const schemaLogin = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -14,6 +17,7 @@ const schemaLogin = z.object({
 
 export default function LoginPage() {
   const { theme } = useTheme();
+
   const {
     register,
     handleSubmit,
@@ -30,7 +34,18 @@ export default function LoginPage() {
   if (isError) return <div>Seu Backend esta Offline</div>;
 
   function onSubmit(data: any) {
-    console.log(data);
+    fetchLogin(data).then((res) => {
+      if (!res) {
+        toast.error("Email ou senha incorretos");
+        return false;
+      }
+      toast.success("Logado com sucesso");
+
+      Cookie.set("token", res.token);
+      setTimeout(() => {
+        window.location.href = "/code";
+      }, 5000);
+    });
   }
 
   function RedirectLogin() {

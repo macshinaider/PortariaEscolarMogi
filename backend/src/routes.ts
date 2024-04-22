@@ -2,7 +2,7 @@ import express from "express";
 import { Request, Response } from "express";
 import StatusBackend from "./services/status/status";
 import Consult from "./services/consult/get";
-import Account from "./services/account/register/register";
+import Account from "./services/account/action/action";
 
 class Router {
 	router: any;
@@ -19,6 +19,7 @@ class Router {
 		// accounts
 		this.router.post("/account/register", Account.Register);
 		this.router.post("/account/login", Account.Login);
+		this.router.get("/code", Account.Code)
 	}
 
 	index(req: Request, res: Response) {

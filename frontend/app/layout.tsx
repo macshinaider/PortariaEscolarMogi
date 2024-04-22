@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Rubik } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/utils/tanstack/provider";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const inter = Rubik({ subsets: ["latin"] });
 
@@ -19,6 +21,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={inter.className}>
         <QueryProvider>{children}</QueryProvider>
+        <ToastContainer />
       </body>
     </html>
   );
