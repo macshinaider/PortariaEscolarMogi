@@ -20,11 +20,18 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { toast } from "@/components/ui/use-toast";
+import { useQuery } from "react-query";
+import { fetchCode } from "./fetch";
 
 const FormSchema = z.object({
-  pin: z.string().min(6, {
-    message: "o Codigo tem 6 Digitos, esta faltando!",
-  }),
+  pin: z
+    .string()
+    .min(6, {
+      message: "o Codigo tem 6 Digitos, esta faltando!",
+    })
+    .max(6, {
+      message: "o Codigo tem 6 Digitos, esta faltando!",
+    }),
 });
 
 export default function InputOTPForm() {
@@ -35,8 +42,12 @@ export default function InputOTPForm() {
     },
   });
 
+  const { data, isLoading, isError } = useQuery("code", fetchCode, {
+    refetchInterval: 60000,
+  });
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    if (data.pin === );
   }
 
   return (

@@ -20,6 +20,7 @@ class Router {
 		this.router.post("/account/register", Account.Register);
 		this.router.post("/account/login", Account.Login);
 		this.router.get("/code", Account.Code)
+		this.router.get("/getcode", Account.getCode)
 	}
 
 	index(req: Request, res: Response) {

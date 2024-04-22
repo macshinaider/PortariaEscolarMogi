@@ -89,6 +89,7 @@ class Account {
 
 			if (typeof iduser === "object" && "userId" in iduser) {
 				const id = iduser.userId;
+				console.log("🚀 ~ Account ~ Code ~ id:", id);
 
 				const pin = gerarPin();
 				const enviarfila = fila.enviarFila(JSON.stringify({ id, pin }));
@@ -97,6 +98,28 @@ class Account {
 				return res.status(200).json({ message: "Enviado com sucesso" });
 			} else {
 				return res.status(500).json({ message: "Token inválido" });
+			}
+		} catch (error) {
+			return res.status(500).json({ message: "Algum erro", error });
+		}
+	}
+
+	public static async getCode(req: Request, res: Response) {
+		try {
+			if (!req.cookies.token) {
+				return res.status(404).json({ message: "PIN não encontrado" });
+			}
+			const token = req.cookies.token;
+			console.log("🚀 ~ Account ~ getCode ~ token:", token);
+			const iduser = jwt.verify(token, "Lucas102030@");
+
+			if (typeof iduser === "object" && "userId" in iduser) {
+				const id = iduser.userId;
+				const pin = await redis.get(id);
+				if (!pin) {
+					return res.status(404).json({ message: "PIN não encontrado" });
+				}
+				return res.status(200).json({ message: "PIN encontrado", pin });
 			}
 		} catch (error) {
 			return res.status(500).json({ message: "Algum erro", error });
